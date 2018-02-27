@@ -8,7 +8,9 @@ import 'rxjs/add/operator/map';
 export class ValidatorService {
 
   baseUrl: String = 'http://localhost:3000/api';
-  constructor(private _http: HttpClient) { }
+  constructor(private _http: HttpClient) {
+    this.baseUrl = '/api';
+   }
 
   usernameValid(username: String) {
     return this._http.post<any>(this.baseUrl + '/usernameVaild', { username: username })

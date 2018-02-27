@@ -73,19 +73,20 @@ app.post('/register', (req, res) => {
     //validate user object
     //if correct then store else
     //send fail response
-    let user = new UserRequest({
-        username: req.body.username,
-        email: req.body.email,
-        phoneNo: req.body.phoneNo
-    });
-    user.save((err, user) => {
-        if (err) {
-            console.log(err);
-            res.json({ response: 'fail' })
-        } else {
-            res.json({ response: 'success' });
-        }
-    })
+    /*  let user = new UserRequest({
+          username: req.body.username,
+          email: req.body.email,
+          phoneNo: req.body.phoneNo
+      });
+      user.save((err, user) => {
+          if (err) {
+              console.log(err);
+              res.json({ response: 'fail' })
+          } else {
+              res.json({ response: 'success' });
+          }
+      })*/
+    res.json({ response: 'success' });
 })
 
 app.post('/login', function(req, res, next) {
