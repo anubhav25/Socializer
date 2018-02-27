@@ -1,0 +1,121 @@
+<div class="col-lg-6 col-md-8 col-10 mx-auto form-box">
+    <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+        <div [style.display]="firstpage">
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted }">
+                <input type="file" style="display:none;" #profilePic accept="image/*" (change)='handleFile($event.target.files,imgPreview)' />
+                <div class="outerBox mx-auto">
+                    <img src="/assets/img/default.png" #imgPreview class="rounded-circle" alt="Select Your Image" height="125px" width="125px">
+                    <div class="overlay">
+                        <div class="centerMessage" (click)="selectImage(profilePic)"><label> upload photo </label></div>
+                        <div class="cornerButton" [style.display]="imageSelected" (click)="rotate90(imgPreview)"> <i class="fa fa-repeat" style="font-size:25px;"></i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-12 mx-auto"><label><strong>Username </strong></label></div>
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+
+                <input type="text" class="form-control lowercase" placeholder="Username" name="username" [(ngModel)]="model.username" #username="ngModel" required (blur)='checkUsername($event.target.value)' (keypress)="avoidSpaceUsername($event)" />
+                <div *ngIf="f.submitted && !username.valid" class="help-block error">Username is required</div>
+                <div *ngIf="userAlredyExists" class="help-block error">Username already taken. Try another One</div>
+                <div *ngIf="usernameTooShort" class="help-block error">Username too short</div>
+            </div>
+            <div class="col-12 mx-auto"><label><strong>E-Mail </strong></label></div>
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+
+                <input type="email" class="form-control lowercase" placeholder="E-Mail" name="email" [(ngModel)]="model.email" #email="ngModel" required (blur)='checkEmail($event.target.value)' (keypress)="avoidSpaceEmail($event)" />
+
+                <div *ngIf="f.submitted && !email.valid" class="help-block error">email is required</div>
+                <div *ngIf="!emailvalid" class="help-block error">enter valid email</div>
+                <div *ngIf="emailAlredyExists" class="help-block error">Email already registered. Try another One</div>
+
+
+            </div>
+            <div class="col-12 mx-auto"><label><strong>Phone Number </strong></label></div>
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !phoneNo.valid }">
+
+                <input type="tel" class="form-control" placeholder="Phone Number" name="phoneNo" [(ngModel)]="model.phoneNo" #phoneNo="ngModel" required (blur)='checkPhone($event.target.value)' (keypress)="avoidSpacePhone($event)" />
+
+
+                <div *ngIf="f.submitted && !phoneNo.valid" class="help-block error">Phone Number is required</div>
+                <div *ngIf="!phonevalid" class="help-block error">enter valid phone number</div>
+                <div *ngIf="phoneAlredyExists" class="help-block error">Phone already registered. Try another One</div>
+
+
+            </div>
+            <div class="form-group col-12">
+                <button class="btn btn-primary" (click)='nextPage()' type="button">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+
+
+        </div>
+
+        <div [style.display]="lastpage">
+
+
+            <div class="col-12 mx-auto"><label><strong>Full Name</strong></label></div>
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !fullname.valid }">
+
+                <input type="text" class="form-control lowecase" placeholder="Full Name" name="fullname" [(ngModel)]="model.fullname" #fullname="ngModel" required />
+                <div *ngIf="f.submitted && !fullname.valid" class="help-block error">Name is required</div>
+            </div>
+            <div class="col-12 mx-auto"><label><strong>Gender </strong></label></div>
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+                <div class="btn-group" role="group">
+
+                    <button type="button" (click)="radioClick('male')" class='btn btn-outline-light' [class.active]='isMale' name="gender" id="optionMale" value="male">Male <i class="fa fa-male"></i></button>
+                    <button type="button" (click)="radioClick('female')" class='btn btn-outline-light' [class.active]='!isMale' name="gender" id="optionFemale" value="female">Female
+  <i class="fa fa-female"></i>
+</button>
+
+                </div>
+
+            </div>
+            <div class="col-12 mx-auto"><label><strong>Date Of Birth</strong></label></div>
+            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !dob.valid }">
+                <input type="date" class="form-control" placeholder="Date Of Birth" name="dob" [(ngModel)]="model.dob" #dob="ngModel" required />
+
+                <div *ngIf="f.submitted && !dob.valid" class="help-block error">Date of Birth is required</div>
+            </div>
+            <div class="col-12 mx-auto"><label><strong>Description</strong></label></div>
+            <div class="form-group col-12">
+
+                <textarea name="description" class="col-12 form-control" rows="3" placeholder="Description" [(ngModel)]="model.description" #description="ngModel"></textarea>
+
+
+            </div>
+
+            <div class="form-group col-12">
+
+                <button class="btn btn-primary col-md-4 col-6" type="button" (click)="prevPage()">Previous <i class="fas fa-chevron-left"></i></button>
+
+
+                <button [disabled]="loading" type="submit" class="btn btn-primary col-md-4 col-6">register <i class="fa fa-user-plus"></i>
+                                                <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                                                /></button>
+
+
+            </div>
+        </div>
+        <div [style.display]="infopage">
+            <div [style.display]='registerInfo' class="alert alert-info col-10 mx-auto" role="alert">
+                Request Submitted.
+                <br> You will recieve a email with your password when admin will approve your request.
+            </div>
+            <div [style.display]='registerError' class="alert alert-danger col-10 mx-auto" role="alert">
+                Server Error.
+                <br> Please try after some time.
+            </div>
+            <div>
+                <a href="/login" class="btn btn-primary">LogIn
+    <i class="fa fa-user" aria-hidden="true"></i>
+  </a>
+                <a href="/register" class="btn btn-primary">SignUp
+    <i class="fa fa-user-plus" aria-hidden="true"></i>
+  </a>
+            </div>
+        </div>
+    </form>
+
+</div>

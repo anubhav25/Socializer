@@ -1,0 +1,46 @@
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="/">{{ title }}</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <div *ngIf="isLogin; then loginBlock; else registerBlock"></div>
+                <ng-template #loginBlock>
+                    <a href="/register" class="btn btn-outline-primary">SignUp
+  <i class="fa fa-user-plus" aria-hidden="true"></i>
+</a>
+                </ng-template>
+                <ng-template #registerBlock>
+                    <a href="/login" class="btn btn-outline-primary">LogIn
+    <i class="fa fa-user" aria-hidden="true"></i>
+  </a>
+
+
+                </ng-template>
+
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<!-- Intro Header -->
+<header class="masthead">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf="isLogin; then loginBlock1; else registerBlock1"></div>
+                    <ng-template #loginBlock1>
+                        <app-login-form></app-login-form>
+                    </ng-template>
+
+                    <ng-template #registerBlock1>
+                        <app-register-form></app-register-form>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<app-footer></app-footer>
