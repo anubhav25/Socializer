@@ -4,9 +4,9 @@
             <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted }">
                 <input type="file" style="display:none;" #profilePic accept="image/*" (change)='handleFile($event.target.files,imgPreview)' />
                 <div class="outerBox mx-auto">
-                    <img src="/assets/img/default.png" #imgPreview class="rounded-circle" alt="Select Your Image" height="125px" width="125px">
+                    <img src="/assets/img/default.png" #imgPreview class="rounded-circle profileImage" alt="Select Your Image" height="125px" width="125px">
                     <div class="overlay">
-                        <div class="centerMessage" (click)="selectImage(profilePic)"><label> upload photo </label></div>
+                        <div class="centerMessage" (click)="selectImage(profilePic)"><label> Upload Image </label></div>
                         <div class="cornerButton" [style.display]="imageSelected" (click)="rotate90(imgPreview)"> <i class="fa fa-repeat" style="font-size:25px;"></i>
                         </div>
                     </div>
@@ -45,7 +45,7 @@
 
             </div>
             <div class="form-group col-12">
-                <button class="btn btn-primary" (click)='nextPage()' type="button">Next <i class="fas fa-chevron-right"></i></button>
+                <button class="btn btn-primary" (click)='nextPage()' type="button">Next <i class="fa fa-angle-right"></i></button>
             </div>
 
 
@@ -61,7 +61,7 @@
                 <div *ngIf="f.submitted && !fullname.valid" class="help-block error">Name is required</div>
             </div>
             <div class="col-12 mx-auto"><label><strong>Gender </strong></label></div>
-            <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !username.valid }">
+            <div class="form-group col-12">
                 <div class="btn-group" role="group">
 
                     <button type="button" (click)="radioClick('male')" class='btn btn-outline-light' [class.active]='isMale' name="gender" id="optionMale" value="male">Male <i class="fa fa-male"></i></button>
@@ -74,7 +74,7 @@
             </div>
             <div class="col-12 mx-auto"><label><strong>Date Of Birth</strong></label></div>
             <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted && !dob.valid }">
-                <input type="date" class="form-control" placeholder="Date Of Birth" name="dob" [(ngModel)]="model.dob" #dob="ngModel" required />
+                <input onfocus="(this.type='date')" class="form-control" placeholder="Date Of Birth" name="dob" [(ngModel)]="model.dob" #dob="ngModel" required />
 
                 <div *ngIf="f.submitted && !dob.valid" class="help-block error">Date of Birth is required</div>
             </div>
@@ -88,7 +88,7 @@
 
             <div class="form-group col-12">
 
-                <button class="btn btn-primary col-md-4 col-6" type="button" (click)="prevPage()">Previous <i class="fas fa-chevron-left"></i></button>
+                <button class="btn btn-primary col-md-4 col-6" type="button" (click)="prevPage()"><i class="fa fa fa-angle-left"></i> Previous</button>
 
 
                 <button [disabled]="loading" type="submit" class="btn btn-primary col-md-4 col-6">register <i class="fa fa-user-plus"></i>

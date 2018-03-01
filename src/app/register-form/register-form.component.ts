@@ -35,6 +35,8 @@ export class RegisterFormComponent implements OnInit {
   lastpage = 'none';
 
   handleFile(files, imgPreview) {
+    this.model.rotation = 0;
+    imgPreview.style.transform = 'rotate(0deg)';
     this.model.fileToUpload = files.item(0);
     console.log(files[0]);
     const reader = new FileReader();
@@ -48,8 +50,7 @@ export class RegisterFormComponent implements OnInit {
 
   }
 rotate90(imgtag) {
-  let ang = imgtag.style.transform;
-  ang = parseInt(ang.substr(ang.indexOf('(') + 1 , ang.indexOf('deg')), 0) || 0;
+  const ang = parseInt(this.model.rotation, 0) || 0;
 imgtag.style.transform = 'rotate(' + (90 + ang) + 'deg)';
   this.model.rotation = (90 + ang) % 360 ;
 }

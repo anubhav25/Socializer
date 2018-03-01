@@ -1,0 +1,25 @@
+<div class="container">
+    <div class="row" *ngIf="true && users && users.length">
+
+        <div class="col-lg-3 col-md-4 col-sm-5 col-10 mx-auto mt-4" *ngFor="let user of users">
+            <div class="card">
+                <img class="card-img-top img-fluid" [src]="user.imglink" alt="profile picture">
+                <div class="card-block">
+                    <h5 class="card-title">{{ user.fullname }}</h5>
+                    <h6 class="card-text">{{ user.email }}</h6>
+                    <h6 class="card-text">{{ user.phoneNo }}</h6>
+                    <h6 class="card-text">{{ user.username }}</h6>
+
+                    <button class="btn btn-outline-info m-1">View Profile <i class="fa fa-user"></i></button>
+
+                    <div class="">
+                        <button class="btn btn-outline-success m-1">Accept <i class="fa fa-check"></i></button>
+                        <button class="btn btn-outline-danger m-1">Reject <i class="fa fa-ban"></i></button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
     });
   } */
   constructor(private _authenticateService: AuthenticateService, private route: ActivatedRoute, private router: Router) {
-    this._authenticateService.isLoggedIn()
+    /* this._authenticateService.isLoggedIn()
     .subscribe(resp => {
       if ( resp.message) {
         this.user = resp.user ;
@@ -28,7 +28,11 @@ export class HomeComponent implements OnInit {
     },
   err => {
       this.router.navigate( ['/login'] ) ;
-  });
+  }); */
+
+  this.user = {
+    username : 'anubhav'
+  } ;
   }
 
   ngOnInit() {

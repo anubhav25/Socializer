@@ -1,0 +1,14 @@
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.row>div[class*='col-'] {
+    display: flex;
+}
+
+@media (max-width: 1244px) {
+    button {
+        min-width: 9rem;
+    }
+}

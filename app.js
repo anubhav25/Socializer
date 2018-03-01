@@ -21,7 +21,7 @@ server.listen(port);
 
 
 var dburl = 'mongodb://localhost/Socializer';
-dburl = 'mongodb://default:default@ds247698.mlab.com:47698/socializer'
+//dburl = 'mongodb://default:default@ds247698.mlab.com:47698/socializer'
 
 mongoose.connect(dburl);
 

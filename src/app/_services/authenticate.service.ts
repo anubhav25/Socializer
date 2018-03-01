@@ -9,7 +9,7 @@ export class AuthenticateService {
 
   baseUrl: String = 'http://localhost:3000/api';
   constructor(private _http: HttpClient) { 
-    this.baseUrl = '/api' ;
+   // this.baseUrl = '/api' ;
   }
 
   login(username: String , password: String) {

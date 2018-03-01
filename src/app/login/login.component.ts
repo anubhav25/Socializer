@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit {
 
   constructor(private _authenticateService: AuthenticateService, private route: ActivatedRoute , private router: Router) {
    this._authenticateService.logout();
-   this.isLogin = window.location.href.endsWith('/login');
+   this.isLogin = !window.location.href.endsWith('/register');
    }
 
 

@@ -12,9 +12,11 @@ import { AuthenticateService } from './_services/authenticate.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ValidatorService } from './_services/validator.service';
+import { AdminService } from './_services/admin.service';
 import { AdminComponent } from './admin/admin.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
+import { AddUserComponent } from './add-user/add-user.component';
 
 
 @NgModule({
@@ -26,7 +28,8 @@ import { RegisterFormComponent } from './register-form/register-form.component';
     NavbarComponent,
     AdminComponent,
     LoginFormComponent,
-    RegisterFormComponent
+    RegisterFormComponent,
+    AddUserComponent
   ],
   imports: [
     BrowserModule,
@@ -41,23 +44,31 @@ import { RegisterFormComponent } from './register-form/register-form.component';
       },
       {
         path :  'login',
-        component : LoginComponent,
+        component : LoginComponent
       },
       {
         path :  'register',
-        component: LoginComponent,
+        component: LoginComponent
       },
       {
         path: 'home',
-        component: HomeComponent,
+        component: HomeComponent
       },
       {
         path: 'admin',
         component: AdminComponent,
-      }
+        children: [{
+          path: 'requests',
+          component: AddUserComponent
+        }]
+      },
+      {
+        path: '**',
+       redirectTo : '/home'
+      },
     ])
   ],
-  providers: [ AuthenticateService, ValidatorService ],
+  providers: [ AuthenticateService, ValidatorService, AdminService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -9,7 +9,7 @@ export class ValidatorService {
 
   baseUrl: String = 'http://localhost:3000/api';
   constructor(private _http: HttpClient) {
-    this.baseUrl = '/api';
+    // this.baseUrl = '/api';
    }
 
   usernameValid(username: String) {
