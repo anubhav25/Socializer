@@ -3,10 +3,10 @@ var User = require('../models/user');
 var UserRequest = require('../models/user_request');
 var Login = require('../models/login');
 var passport = require('passport');
+var image = require('./modules/image')
+var upload = require('./modules/upload')
 
 var app = express.Router();
-
-
 
 function isLoggedin(req, res, next) {
     console.log(req.isAuthenticated())
@@ -44,15 +44,7 @@ app.post('/emailVaild', (req, res) => {
     else
         res.json({ response: true });
 });
-app.post('/phoneNoVaild', (req, res) => {
-    //check of if the phoneno is already available
-    //if already exists send false
-    //else send true
-    if (req.body.phoneNo == '7404541565')
-        res.json({ response: false });
-    else
-        res.json({ response: true });
-});
+
 
 /* app.post('/register', (req, res) => {
     UserRequest.register(new UserRequest({ username: req.body.username, email }), req.body.password, (err, user) => {
@@ -69,25 +61,62 @@ app.post('/phoneNoVaild', (req, res) => {
 
 
 app.post('/register', (req, res) => {
+    var nameOfFile = 'anubhav-' + Date.now();
+    upload('file', nameOfFile, 'profilePictures', req, res, function(err) {
+        if (err) {
+            res.json({ response: 'fail' });
+            console.log(err);
+        } else {
 
-    //validate user object
-    //if correct then store else
-    //send fail response
-    /*  let user = new UserRequest({
-          username: req.body.username,
-          email: req.body.email,
-          phoneNo: req.body.phoneNo
-      });
-      user.save((err, user) => {
-          if (err) {
-              console.log(err);
-              res.json({ response: 'fail' })
-          } else {
-              res.json({ response: 'success' });
-          }
-      })*/
-    res.json({ response: 'success' });
+
+            if (req.file) {
+                if (parseInt(req.body.rotation) > 0) {
+                    image.rotate(req.file.path, req.body.rotation);
+                } else {
+                    image.compress(req.file.path);
+                }
+                delete req.body.rotation;
+            } else {
+                req.body.imglink = '/assets/profilePictures/default.png'
+            }
+            let user = new UserRequest(req.body);
+            user.save((err, user) => {
+                if (err) {
+                    console.log(err);
+                    res.json({ response: 'fail' })
+                } else {
+                    res.json({ response: 'success' });
+                }
+            })
+        }
+
+    })
 })
+
+app.get('/search/:query', (req, res) => {
+    var myquery = req.params.query;
+    var regex = new RegExp(myquery, 'i');
+    regex = '/.*' + myquery + '.*/i/';
+    console.log(regex)
+    var query = User.find({ username: regex }, { 'username': 1 }).limit(20);
+    query.exec(function(err, users) {
+        if (!err) {
+            var query = UserRequest.find({ username: regex }, { 'username': 1 }).limit(20);
+            query.exec(function(err, users2) {
+                if (!err) {
+                    res.json(users.concat(users2));
+                } else {
+                    res.json(err);
+                }
+            });
+
+
+        } else {
+            res.json(err);
+        }
+    });
+})
+
 
 app.post('/login', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {

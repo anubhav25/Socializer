@@ -13,10 +13,13 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ValidatorService } from './_services/validator.service';
 import { AdminService } from './_services/admin.service';
+import { UserService } from './_services/user.service';
 import { AdminComponent } from './admin/admin.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { AddUserComponent } from './add-user/add-user.component';
+
+
 
 
 @NgModule({
@@ -68,7 +71,7 @@ import { AddUserComponent } from './add-user/add-user.component';
       },
     ])
   ],
-  providers: [ AuthenticateService, ValidatorService, AdminService ],
+  providers: [ AuthenticateService, ValidatorService, AdminService , UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

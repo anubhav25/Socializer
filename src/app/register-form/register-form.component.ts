@@ -3,6 +3,7 @@ import { AuthenticateService } from '../_services/authenticate.service';
 import { ValidatorService } from '../_services/validator.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
+
 @Component({
   selector: 'app-register-form',
   templateUrl: './register-form.component.html',
@@ -14,6 +15,7 @@ export class RegisterFormComponent implements OnInit {
   model: any = {
     gender : 'male'
   };
+  errorMessage = 'Server Error.\n Please try after some time.' ;
   loading = false;
   emailvalid: boolean;
   phonevalid: boolean;
@@ -34,21 +36,25 @@ export class RegisterFormComponent implements OnInit {
   infopage = 'none';
   lastpage = 'none';
 
-  handleFile(files, imgPreview) {
-    this.model.rotation = 0;
-    imgPreview.style.transform = 'rotate(0deg)';
-    this.model.fileToUpload = files.item(0);
-    console.log(files[0]);
-    const reader = new FileReader();
+  handleFile(event, imgPreview) {
+    const fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      imgPreview.style.transform = 'rotate(0deg)';
+      this.model.rotation = 0;
+      this.imageSelected = 'block';
+      const file: File = fileList[0];
+      this.model.file = file ;
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        const target: any = ev.target;
+        imgPreview.src = target.result;
+      };
 
-    reader.readAsDataURL(files.item(0));
-     this.imageSelected = 'block';
-    reader.onload = function (ev) {
-      const target: any = ev.target;
-      imgPreview.src = target.result ;
-    };
-
+      reader.readAsDataURL(file);
+    }
   }
+
+
 rotate90(imgtag) {
   const ang = parseInt(this.model.rotation, 0) || 0;
 imgtag.style.transform = 'rotate(' + (90 + ang) + 'deg)';
@@ -164,6 +170,8 @@ prevPage () {
               private route: ActivatedRoute, private router: Router) {
     this.emailvalid = true;
     this.phonevalid = true;
+
+
   }
 
   ngOnInit() {
@@ -177,14 +185,26 @@ prevPage () {
     this.registerError = 'none';
     this.registerInfo = 'none';
 
-console.log(this.model);
+// console.log(this.model);
 this.loading = true ;
-/* setTimeout(() => {
-  this.loading = false;
-}, 2000); */
+
+    const body: any = new FormData();
+
+    for (const i of Object.keys(this.model)) {
+      if ( i !== 'file' ) {
+      body.append(i, this.model[i]);
+      }
+    }
+if (this.model.file) {
+  body.append('file', this.model.file, this.model.file.name);
+  delete this.model.file ;
+}
 
 
-      this._authenticateService.register(this.model.username, this.model.email, this.model.phoneNo)
+
+console.log(body);
+
+      this._authenticateService.register(body)
         .subscribe(resp => {
           console.log(resp);
           this.lastpage = 'none';
@@ -194,6 +214,7 @@ this.loading = true ;
             this.registerError = 'none';
             this.registerInfo = 'block';
           } else {
+            this.errorMessage = resp.message || this.errorMessage ;
             this.registerError = 'block';
             this.registerInfo = 'none';
           }

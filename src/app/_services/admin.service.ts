@@ -12,6 +12,8 @@ export class AdminService {
     // this.baseUrl = '/api' ;
   }
 
+
+
   getRequestsList() {
     return this._http.get<any>(this.baseUrl + '/userRequests' )
       .map(resp => {
@@ -27,6 +29,27 @@ export class AdminService {
         //         console.log(resp);
         if (!resp) {
           return { response: 'fail', message: 'Password or username is incorrect' };
+        }
+        return resp;
+      });
+  }
+
+  accept(username: String) {
+    return this._http.post<any>(this.baseUrl + '/acceptUser', { username: username })
+      .map(resp => {
+        //         console.log(resp);
+        if (!resp) {
+          return { response: 'fail' };
+        }
+        return resp;
+      });
+  }
+  reject(username: String) {
+    return this._http.post<any>(this.baseUrl + '/rejectUser', { username: username })
+      .map(resp => {
+        //         console.log(resp);
+        if (!resp) {
+          return { response: 'fail' };
         }
         return resp;
       });

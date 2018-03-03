@@ -1,8 +1,8 @@
 <div class="col-lg-6 col-md-8 col-10 mx-auto form-box">
-    <form name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+    <form name="form" enctype="multipart/form-data" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
         <div [style.display]="firstpage">
             <div class="form-group col-12" [ngClass]="{ 'has-error': f.submitted }">
-                <input type="file" style="display:none;" #profilePic accept="image/*" (change)='handleFile($event.target.files,imgPreview)' />
+                <input type="file" style="display:none;" #profilePic accept="image/*" (change)='handleFile($event,imgPreview)' />
                 <div class="outerBox mx-auto">
                     <img src="/assets/img/default.png" #imgPreview class="rounded-circle profileImage" alt="Select Your Image" height="125px" width="125px">
                     <div class="overlay">
@@ -104,8 +104,7 @@
                 <br> You will recieve a email with your password when admin will approve your request.
             </div>
             <div [style.display]='registerError' class="alert alert-danger col-10 mx-auto" role="alert">
-                Server Error.
-                <br> Please try after some time.
+                {{ errorMessage }}
             </div>
             <div>
                 <a href="/login" class="btn btn-primary">LogIn

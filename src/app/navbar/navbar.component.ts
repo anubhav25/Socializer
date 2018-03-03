@@ -1,4 +1,5 @@
 import { Component, OnInit , Input } from '@angular/core';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-navbar',
@@ -75,7 +76,7 @@ export class NavbarComponent implements OnInit {
   @Input() public user: any ;
 
   title = 'socializer' ;
-  constructor() {
+  constructor(private _userService: UserService) {
   // const path = window.location.pathname ;
    }
 
@@ -88,6 +89,10 @@ export class NavbarComponent implements OnInit {
     if (event.which ===  13 && text) {
 
 console.log(text);
+this._userService.search(text)
+.subscribe(resp => {
+  console.log(resp);
+});
     }
 
 

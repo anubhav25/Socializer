@@ -52,6 +52,7 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'dist')));
 
+
 app.use('/api', index)
 app.use('/admin', admin);
 

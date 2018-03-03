@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders  } from '@angular/common/http';
+import { RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
@@ -8,7 +9,7 @@ import 'rxjs/add/operator/map';
 export class AuthenticateService {
 
   baseUrl: String = 'http://localhost:3000/api';
-  constructor(private _http: HttpClient) { 
+  constructor(private _http: HttpClient) {
    // this.baseUrl = '/api' ;
   }
 
@@ -23,8 +24,12 @@ export class AuthenticateService {
         });
   }
 
-  register ( username: String, email: String, phoneNo: String) {
-    return this._http.post<any>( this.baseUrl + '/register', { username: username, email: email, phoneNo : phoneNo })
+  register (formData: any) {
+    const header = new HttpHeaders();
+    header.append('enctype', 'multipart/form-data');
+    header.append('Accept', 'application/json');
+    const options = { headers: header };
+    return this._http.post<any>( this.baseUrl + '/register', formData , options)
       .map(resp => {
  //         console.log(resp);
         if (!resp) {
