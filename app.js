@@ -11,14 +11,15 @@ var Login = require('./models/login');
 var index = require('./routes/index');
 var admin = require('./routes/admin');
 var path = require('path');
+var siofu = require("socketio-file-upload");
 
 
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 var server = http.createServer(app);
-server.listen(port);
-
-
+server.listen(port, () => {
+    console.log('listning')
+});
 
 var dburl = 'mongodb://localhost/Socializer';
 //dburl = 'mongodb://default:default@ds247698.mlab.com:47698/socializer'
@@ -51,9 +52,10 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(express.static(path.join(__dirname, 'dist')));
-
-
+app.use(siofu.router);
+var Chat = require('./routes/chat')(server, siofu);
 app.use('/api', index)
+app.use('/chat', Chat);
 app.use('/admin', admin);
 
 app.get('*', (req, res) => {
@@ -74,8 +76,8 @@ app.use(function(err, req, res, next) {
     // set locals, only providing error in development
     res.locals.message = err.message;
     res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-    // render the error page
+    console.log(err.message)
+        // render the error page
     res.status(err.status || 500);
     // res.render('error');
     res.send('<h1>ERROR 404</h1>')

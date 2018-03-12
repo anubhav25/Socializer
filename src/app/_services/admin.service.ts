@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 @Injectable()
 export class AdminService {
-
+  private myobj = new BehaviorSubject('');
+  currentUser = this.myobj.asObservable();
+  me: any;
   baseUrl: String = 'http://localhost:3000/admin';
   constructor(private _http: HttpClient) {
     // this.baseUrl = '/api' ;
@@ -62,11 +65,40 @@ export class AdminService {
       });
   }
 
+  getme()  {
+     return this.me ;
+  }
+
   isLoggedIn() {
-    return this._http.get<any>(this.baseUrl + '/isLoggedin')
+     return this._http.get<any>(this.baseUrl + '/isLoggedin')
       .map(resp => {
+        resp = {
+          message: true,
+          user: {
+            '_id': '5a9e6c3f4701de2af429fe0f',
+            'username': 'anubhav789',
+            'email': 'anubhav@mailinator.com',
+            'phoneNo': '7404541567',
+            'fullname': 'anubhav',
+            'dob': new Date('1996-05-25T05:30:00.000+05:30'),
+            'gender': 'male',
+            'admin' : true,
+            'imglink': '/assets/profilePictures/anubhav-1520331635492.jpg',
+            'thumbnail': '/assets/thumbnails/anubhav-1520331635492.jpg',
+            'description': 'asmjdhkaj',
+            '__v': 0
+          }
+        };
+        if (resp.message && resp.user) {
+          this.myobj.next(resp.user);
+          this.me = resp.user ;
+
+        }
         return resp;
+
       });
+
+
   }
 
 }

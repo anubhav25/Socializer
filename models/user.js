@@ -28,6 +28,18 @@ var userSchema = new mongoose.Schema({
     imglink: {
         type: String,
         required: true
-    }
+    },
+    thumbnail: {
+        type: String,
+        required: true
+    },
+    unreadMessages: [{
+        from: String,
+        number: {
+            type: Number,
+            default: 0
+        }
+    }]
+
 });
 module.exports = mongoose.model('Users', userSchema);

@@ -13,7 +13,7 @@ export class ValidatorService {
    }
 
   usernameValid(username: String) {
-    return this._http.post<any>(this.baseUrl + '/usernameVaild', { username: username })
+    return this._http.post<any>(this.baseUrl + '/usernameValid', { username: username })
       .map(resp => {
         if (!resp) {
           return { response: false};
@@ -22,7 +22,7 @@ export class ValidatorService {
       });
   }
   emailValid(email: String) {
-    return this._http.post<any>(this.baseUrl + '/emailVaild', { email: email })
+    return this._http.post<any>(this.baseUrl + '/emailValid', { email: email })
       .map(resp => {
         if (!resp) {
           return { response: false};
@@ -31,7 +31,7 @@ export class ValidatorService {
       });
   }
   phoneNoValid(phoneNo: String) {
-    return this._http.post<any>(this.baseUrl + '/phoneNoVaild', { phoneNo: phoneNo })
+    return this._http.post<any>(this.baseUrl + '/phoneNoValid', { phoneNo: phoneNo })
       .map(resp => {
         if (!resp) {
           return { response: false};

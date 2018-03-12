@@ -1,0 +1,41 @@
+<!-- Navigation -->
+<app-navbar [user]="user"></app-navbar>
+
+<!-- Intro Header -->
+<header class="masthead">
+    <div class="intro-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-10 mx-auto">
+                    <!-- <img [src]="user.imglink" class="rounded-circle profileImage" alt="Profile Picture" height="125px" width="125px"> -->
+
+                    <div class="container">
+                        <div class="card">
+                            <div class="row p-3">
+                                <div class="col-lg-5 m-auto">
+                                    <img [src]="user.imglink" class="rounded-circle profileImage">
+                                </div>
+                                <div class="col-lg-7">
+                                    <div class="card-block">
+                                        <h4 class="card-title">{{ ' ' +user.username }}</h4>
+                                        <p class="card-text">{{ ' '+user.fullname }}</p>
+                                        <p class="card-text"><i class="fa fa-envelope"></i>{{ ' '+user.email }}</p>
+                                        <p class="card-text"><i class="fa fa-phone"></i>{{ ' '+user.phoneNo }}</p>
+                                        <p class="card-text"><i class="fa fa-user"></i>{{ ' '+user.gender }}</p>
+                                        <p class="card-text"><i class="fa fa-birthday-cake"></i>{{ ' '+user.dob }}</p>
+                                        <p *ngIf="true && user.description" class="card-text"><i class="fa fa-file"></i>{{ ' '+user.description }}</p>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<app-footer></app-footer>

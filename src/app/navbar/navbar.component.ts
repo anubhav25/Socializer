@@ -3,45 +3,44 @@ import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-navbar',
-  template: `<!-- Navigation -->
-            <nav class="navbar navbar-expand-md navbar-light fixed-top"  id="mainNav">
-              <div class="container">
-                <div *ngIf="user.admin && true; then adminBlock; else userBlock"></div>
-                  <ng-template #adminBlock>
-                    <a class="navbar-brand js-scroll-trigger" href="/admin">{{ title }}</a>
-                  </ng-template>
-
-                  <ng-template #userBlock>
-                      <a class="navbar-brand js-scroll-trigger" href="/home">{{ title }}</a>
-                  </ng-template>
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-                  Menu
-                  <i class="fa fa-bars"></i>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarResponsive" >
-                  <ul class="navbar-nav ml-auto pull-right">
-                    <li class="nav-item">
-                      <form name="form" >
-                        <input type="text" class="form-control lowercase pull-right" placeholder="search" name="search" (keyup)="search($event)" />
-                      </form>
-                    </li>
-                    <li class="nav-item">
-                      <a class="btn btn-outline-success buttonIcon pull-right" (click)="logout()"><span class="buttonText"> {{ user.username }} &nbsp;</span><i class='fa fa-user'></i></a>
-                    </li>
-                    <li class="nav-item" *ngIf="user.admin && true ">
-                      <a class="btn btn-outline-success buttonIcon pull-right" id="requestsButton"  href="/admin/requests"><span class="buttonText">Requests&nbsp;</span><i class='fa fa-user-plus'></i></a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="btn btn-outline-success buttonIcon pull-right" (click)="logout()"><span class="buttonText">messages&nbsp;</span><i class='fa fa-envelope'></i></a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="btn btn-outline-success buttonIcon pull-right" (click)="logout()"><span class="buttonText">logout&nbsp;</span><i class='fa fa-sign-out'></i></a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>`,
+  templateUrl: './navbar.component.html',
   styles: [`
+  .searchDiv {
+    width : 100%;
+    position: relative;
+  }
+  .searchBar {
+    width : 100%;
+    height : 50px;
+  }
+  .searchResultItem {
+    height : 37px;
+    max-height : 37px;
+  }
+    .searchResultItem img{
+      position : absolute ;
+
+  }
+      .searchResultItem div{
+     margin-left : 37px;
+     overflow: hidden;
+
+  }
+  .searchResults {
+    position: absolute;
+    width: 100% ;
+    background: #444;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid gray;
+
+    left: 0;
+    right: 0;
+    top: 30px;
+  }
+
   .lowercase {
     text-transform: lowercase;
 }
@@ -74,25 +73,32 @@ import { UserService } from '../_services/user.service';
 export class NavbarComponent implements OnInit {
 
   @Input() public user: any ;
-
+  focusOnSearch = false ;
   title = 'socializer' ;
-  constructor(private _userService: UserService) {
+  items: any[];
+  searchText = '';
+    constructor(private _userService: UserService) {
   // const path = window.location.pathname ;
    }
 
   ngOnInit() {
   }
   search(event) {
-
+    event.preventDefault();
     let text = event.target.value ;
     text = text.trim();
-    if (event.which ===  13 && text) {
-
+    if (text && text.length > 2 && text !== this.searchText ) {
+this.searchText = text ;
 console.log(text);
 this._userService.search(text)
 .subscribe(resp => {
   console.log(resp);
+  this.items = resp;
 });
+    }
+    if (text && text.length < 3) {
+      this.items = [];
+      this.searchText = '';
     }
 
 

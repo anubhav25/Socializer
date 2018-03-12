@@ -1,0 +1,56 @@
+<!-- <div class="col-lg-4 col-md-5">
+    <nav class="navbar  navbar-expand-md" role="navigation">
+
+        <div class="people-list collapse navbar-collapse " id="people-list">
+            
+           
+
+        </div>
+    </nav>
+</div>
+
+<app-chat-body [chatwith]="chatwith " [me]="me "></app-chat-body>
+ -->
+<div class="row m-0" style="height: 100%; width : 100%;">
+    <div class="col-lg-4 col-md-5 p-0 userlist">
+        <div class="sidebar-nav">
+            <div class="navbar navbar-expand-md p-0" role="navigation">
+
+                <div class="navbar-collapse collapse sidebar-navbar-collapse people-list">
+
+                    <div class="people-list-ul p-2 ml-3">
+                        <div class="nav-item search p-2">
+                            <input type="text" class="nav-item" class="mx-auto p-2" placeholder="search" (keyup)="search($event.target.value)" />
+                            <i class="fa fa-search"></i>
+                        </div>
+                        <ul class="nav navbar-nav list">
+                            <li class="clearfix nav-item" *ngFor="let user of OnlineUsers " (click)="showChat(user) ">
+                                <img [src]="user.thumbnail " alt="avatar " class="rounded-circle profileImage " />
+                                <div class="about ">
+
+                                    <div class="name " [id]="user.username ">
+                                        {{ user.username }}</div>
+                                    <label><i class="fa fa-circle online "></i>Online </label>
+                                </div>
+                            </li>
+                            <li class="clearfix nav-item" *ngFor="let user of OfflineUsers " (click)="showChat(user) ">
+                                <img [src]="user.thumbnail " alt="avatar " class="rounded-circle profileImage " />
+                                <div class="about ">
+
+                                    <div class="name " [id]="user.username ">{{ user.username }}</div>
+                                    <label><i class="fa fa-circle offline "></i>Offline </label>
+
+                                </div>
+                            </li>
+                        </ul>
+
+                    </div>
+                </div>
+                <!--/.nav-collapse -->
+            </div>
+        </div>
+    </div>
+    <div class=" col-lg-8 col-md-7 p-0 chatbox">
+        <app-chat-body [chatwith]="chatwith " [me]="me "></app-chat-body>
+    </div>
+</div>

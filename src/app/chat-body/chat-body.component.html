@@ -1,0 +1,125 @@
+<div class="chat">
+    <div *ngIf="chatwith === undefined; then emptyChat; else Chatwithsomeone"></div>
+    <ng-template #emptyChat>
+        <img src="/assets/img/chat.jpg" alt="select a contact to start chatting" style="min-width: 100%; min-height: 100%; max-width: 100%; max-height: 100%;" />
+
+    </ng-template>
+
+    <ng-template #Chatwithsomeone>
+        <div class="chat-header clearfix">
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target=".sidebar-navbar-collapse" aria-controls="sidebar-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                  Users
+                  <i class="fa fa-users"></i>
+                </button>
+
+            <img class="rounded-circle" [src]="chatwith.thumbnail" alt="avatar" />
+            <div class="chat-with mx-auto">{{ chatwith.username }}</div>
+
+
+        </div>
+        <!-- end chat-header -->
+
+        <div class="chat-history">
+            <ul>
+                <li class="clearfix" *ngFor="let msg of messages">
+                    <div *ngIf="msg.from === me.username; then mymsg; else othermsg;"></div>
+                    <ng-template #mymsg>
+                        <div class="message-data align-right">
+                            <span class="message-data-time">{{ moment(msg.time).format( 'MMM Do YYYY, h:mm a') }}</span> &nbsp; &nbsp;
+                            <span class="message-data-name">{{ msg.from }}</span> <i class="fa fa-circle me"></i>
+
+                        </div>
+                        <div class="message other-message float-right">
+                            {{ msg.message }}
+                        </div>
+                    </ng-template>
+
+                    <ng-template #othermsg>
+                        <div class="message-data">
+                            <span class="message-data-name"><i class="fa fa-circle online"></i> {{ msg.from }}</span>
+                            <span class="message-data-time">{{ moment(msg.time).format( 'MMM Do YYYY, h:mm a') }}</span>
+                        </div>
+                        <div class="message my-message">
+                            {{ msg.message }}
+                        </div>
+                    </ng-template>
+                </li>
+
+
+            </ul>
+
+
+        </div>
+        <!-- end chat-history -->
+
+        <div class="chat-message clearfix container my-auto">
+            <div class="float-left col-9 mx-auto">
+                <input type="text" name="message-to-send" #text id="message-to-send" placeholder="Type your message">
+            </div>
+            <div class="float-right col-3 mx-auto">
+                <a><i class="fa fa-file-o"></i></a>&nbsp;&nbsp;&nbsp;
+                <a><i class="fa fa-file-image-o"></i></a>&nbsp;&nbsp;&nbsp;
+                <button [disabled]="loading" (click)="sendmsg(text)" class="btn btn-primary">Send
+                                                <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+                                                /></button>
+            </div>
+        </div>
+        <!-- end chat-message -->
+
+    </ng-template>
+
+
+</div>
+
+
+<!--   <li class="clearfix">
+                    <div class="message-data align-right">
+                        <span class="message-data-time">10:10 AM, Today</span> &nbsp; &nbsp;
+                        <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
+
+                    </div>
+                    <div class="message other-message float-right">
+                        Hi Vincent, how are you? How is the project coming along?
+                    </div>
+                </li>
+
+                <li>
+                    <div class="message-data">
+                        <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+                        <span class="message-data-time">10:12 AM, Today</span>
+                    </div>
+                    <div class="message my-message">
+                        Are we meeting today? Project has been already finished and I have results to show you.
+                    </div>
+                </li>
+
+                <li class="clearfix">
+                    <div class="message-data align-right">
+                        <span class="message-data-time">10:14 AM, Today</span> &nbsp; &nbsp;
+                        <span class="message-data-name">Olia</span> <i class="fa fa-circle me"></i>
+
+                    </div>
+                    <div class="message other-message float-right">
+                        Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any problems at the last phase of the project?
+                    </div>
+                </li>
+
+                <li>
+                    <div class="message-data">
+                        <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+                        <span class="message-data-time">10:20 AM, Today</span>
+                    </div>
+                    <div class="message my-message">
+                        Actually everything was fine. I'm very excited to show this to our team.
+                    </div>
+                </li>
+
+                <li>
+                    <div class="message-data">
+                        <span class="message-data-name"><i class="fa fa-circle online"></i> Vincent</span>
+                        <span class="message-data-time">10:31 AM, Today</span>
+                    </div>
+                    <i class="fa fa-circle online"></i>
+                    <i class="fa fa-circle online" style="color: #AED2A6"></i>
+                    <i class="fa fa-circle online" style="color:#DAE9DA"></i>
+                </li> -->

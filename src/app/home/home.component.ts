@@ -8,31 +8,16 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  user: any ;
-/*   test() {
-    console.log('test');
-    this._authenticateService.test().subscribe(a => {
-      console.log(a);
-    }, err => {
-      console.log(err);
-    });
-  } */
+  me: any ;
   constructor(private _authenticateService: AuthenticateService, private route: ActivatedRoute, private router: Router) {
-    /* this._authenticateService.isLoggedIn()
-    .subscribe(resp => {
-      if ( resp.message) {
-        this.user = resp.user ;
-      } else {
-        this.router.navigate( ['/login'] ) ;
-      }
-    },
-  err => {
-      this.router.navigate( ['/login'] ) ;
-  }); */
-
-  this.user = {
-    username : 'anubhav'
-  } ;
+    this._authenticateService.isLoggedIn()
+      .subscribe(resp => {
+        if (resp.message && resp.user) {
+          this.me = resp.user;
+        } else {
+          this.router.navigate(['/login']);
+        }
+      });
   }
 
   ngOnInit() {

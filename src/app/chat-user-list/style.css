@@ -1,0 +1,20 @@
+@media (min-width: 768px) {
+    .sidebar-nav .navbar .navbar-collapse {
+        padding: 0;
+        max-height: 100%;
+    }
+    .sidebar-nav .navbar ul {
+        float: none;
+        display: block;
+    }
+    .sidebar-nav .navbar .nav-item {
+        float: none;
+        display: block;
+    }
+}
+
+@media (max-width: 768px) {
+    /*     .chatbox {
+        display: none;
+    } */
+}

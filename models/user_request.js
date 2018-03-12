@@ -28,6 +28,10 @@ var userRequestSchema = new mongoose.Schema({
     imglink: {
         type: String,
         required: true
+    },
+    thumbnail: {
+        type: String,
+        required: true
     }
 });
 module.exports = mongoose.model('UserRequests', userRequestSchema);

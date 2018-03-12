@@ -1,0 +1,150 @@
+@import 'style.css';
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700);
+$green: #86BB71;
+$blue: #94C2ED;
+$orange: #E38968;
+$gray: #92959E;
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    .userlist {
+        height: 100%;
+        flex: 1 0 0%;
+    }
+    .chatbox {
+        flex: 1 1 100%;
+    }
+}
+
+.sidebar-nav {
+    height: 100%;
+    width: 100%;
+    .navbar {
+        height: 100%;
+        overflow-y: visible;
+    }
+}
+
+.people-list {
+    height: 100%;
+    float: left;
+    align-content: center;
+    .search {
+        width: auto;
+    }
+    input {
+        border-radius: 5px;
+        border: none;
+        width: 100%;
+        color: white;
+        background: #6A6C75;
+        width: 90%;
+        font-size: 14px;
+    }
+    .fa-search {
+        position: relative;
+        left: -25px;
+    }
+    .people-list-ul {
+        height: 100%;
+        width: 100%;
+        max-height: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-direction: column;
+        .nav-item {
+            display: block;
+        }
+        .list {
+            height: 100%;
+            max-height: 100%;
+            overflow-y: scroll;
+        }
+        .list::-webkit-scrollbar-track {
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            background-color: #F5F5F5;
+        }
+        .list::-webkit-scrollbar {
+            width: 12px;
+            background-color: #F5F5F5;
+        }
+        .list::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, .3);
+            background-color: #555;
+        }
+    }
+    ul {
+        list-style-position: inside;
+        list-style-type: none;
+        padding: 20px;
+        display: flex;
+        flex-direction: row;
+        li {
+            flex: 1 1 auto;
+            width: 100%;
+            padding-bottom: 20px;
+            div {
+                text-align: left;
+            }
+        }
+    }
+    img {
+        float: left;
+    }
+    .about {
+        float: left;
+        margin-top: 8px;
+    }
+    .about {
+        padding-left: 8px;
+    }
+    .status {
+        color: $gray;
+    }
+}
+
+.profileImage {
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    left: 0;
+}
+
+.online,
+.offline,
+.me {
+    margin-right: 3px;
+    font-size: 10px;
+}
+
+.online {
+    color: $green;
+}
+
+.offline {
+    color: $orange;
+}
+
+.me {
+    color: $blue;
+}
+
+.align-left {
+    text-align: left;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.float-right {
+    float: right;
+}

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-footer',
   template: `
+
 <!-- Footer -->
 <footer>
     <div class="container text-center">
@@ -11,7 +12,7 @@ import { Component, OnInit } from '@angular/core';
     </div>
 </footer>
   `,
-  styles: []
+  styleUrls: ['./footer.component.scss']
 })
 export class FooterComponent implements OnInit {
 

@@ -18,6 +18,20 @@ import { AdminComponent } from './admin/admin.component';
 import { LoginFormComponent } from './login-form/login-form.component';
 import { RegisterFormComponent } from './register-form/register-form.component';
 import { AddUserComponent } from './add-user/add-user.component';
+import { ProfileComponent } from './profile/profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { MessagesComponent } from './messages/messages.component';
+
+
+import { NgChatModule } from 'ng-chat';
+
+import { SocketIoModule, SocketIoConfig } from 'ng-socket-io';
+import { ChatService } from './_services/chat.service';
+import { ChatUserListComponent } from './chat-user-list/chat-user-list.component';
+import { ChatBodyComponent } from './chat-body/chat-body.component';
+import { TempComponent } from './temp/temp.component';
+
+const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
 
 
@@ -32,13 +46,21 @@ import { AddUserComponent } from './add-user/add-user.component';
     AdminComponent,
     LoginFormComponent,
     RegisterFormComponent,
-    AddUserComponent
+    AddUserComponent,
+    ProfileComponent,
+    ChangePasswordComponent,
+    MessagesComponent,
+    ChatUserListComponent,
+    ChatBodyComponent,
+    TempComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    NgChatModule,
+    SocketIoModule.forRoot(config) ,
     RouterModule.forRoot([
       {
         path :  '',
@@ -54,8 +76,28 @@ import { AddUserComponent } from './add-user/add-user.component';
         component: LoginComponent
       },
       {
+        path: 'register',
+        component: LoginComponent
+      },
+      {
+        path: 'changepassword',
+        component: ChangePasswordComponent
+      },
+      {
         path: 'home',
         component: HomeComponent
+      },
+      {
+        path: 'messages',
+        component: MessagesComponent
+      },
+      {
+        path: 'profile/:username',
+        component: ProfileComponent
+      },
+      {
+        path: 'temp',
+        component: TempComponent
       },
       {
         path: 'admin',
@@ -68,10 +110,10 @@ import { AddUserComponent } from './add-user/add-user.component';
       {
         path: '**',
        redirectTo : '/home'
-      },
+      }
     ])
   ],
-  providers: [ AuthenticateService, ValidatorService, AdminService , UserService],
+  providers: [ AuthenticateService, ValidatorService, AdminService , UserService, ChatService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

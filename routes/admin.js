@@ -2,10 +2,25 @@ var express = require('express');
 var User = require('../models/user');
 var UserRequest = require('../models/user_request');
 var Login = require('../models/login');
+var sendMail = require('./modules/email');
 var passport = require('passport');
 
 var app = express.Router();
+app.get('/isLoggedIn', (req, res) => {
+    if (req.isAuthenticated() && req.user.admin) {
+        req.user.populate('userid').exec((err, user) => {
+            if (err) {
+                res.json({ message: false })
+            } else {
+                res.json({ message: true, user: user });
+            }
+        });
 
+    } else {
+        res.json({ message: false })
+    }
+
+});
 app.get('/userRequests', (req, res) => {
     UserRequest.find({})
         .limit(20)
@@ -13,14 +28,24 @@ app.get('/userRequests', (req, res) => {
             if (err) {
                 res.json([]);
             } else {
-                //  console.log(data);
-                //    var a = data.concat(data.concat(data.concat(data.concat(data.concat(data.concat(data.concat(data)))))))
                 res.json(data);
             }
         });
 
 
 })
+
+
+
+function gernatePassword() {
+    let pwd = '';
+    let a = 'abcdefghijklmnopqrstuvwxyz1234657890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (let i = 0; i < 6; i++) {
+        pwd += a.charAt(Math.random() * a.length);
+    }
+    return pwd;
+}
+
 
 app.post('/acceptUser', (req, res) => {
     UserRequest.findOne({ 'username': req.body.username }, (err, data) => {
@@ -35,35 +60,54 @@ app.post('/acceptUser', (req, res) => {
                 fullname: data.fullname,
                 dob: data.dob,
                 gender: data.gender,
-                imglink: data.imglink
+                imglink: data.imglink,
+                thumbnail: data.thumbnail
             }
             if (data.description) {
                 tmpUser.description = data.description;
             }
-            var user = new User(tmpUser);
-            user.save((err, user) => {
+            var myuser = new User(tmpUser);
+            myuser.save((err, dbuser) => {
                 if (err) {
                     console.log(err);
                     res.json({ response: 'fail' })
                 } else {
-                    UserRequest.remove({ username: user.username }, (err) => {
+                    UserRequest.remove({ username: dbuser.username }, (err) => {
                         if (err) {
                             res.json({ response: 'fail' })
                         } else {
                             res.json({ response: 'success' });
+                            var pwd = gernatePassword();
+                            Login.register(new Login({ username: dbuser.username, email: dbuser.email, userid: dbuser._id }), pwd, (err, loginuser) => {
+                                if (err) {
+                                    console.log(err);
+                                    res.json({ response: 'fail' });
+                                } else {
+                                    sendMail('registration successful', `<html><body>
+                                    <h4>Congratulations!, Your Socializer account was accepted by the admin.</h4>
+                                    <h4>Your login details are : </h4>
+                                    <h3>Username :  ${loginuser.username}</h3>
+                                    <h3>Password :  ${pwd}</h3>
+                                    <h4><a href='https://mysocializer.herokuapp.com/login'>Click here to login</a></h4>
+                                    <h4><a href='https://mysocializer.herokuapp.com/changepassword'>Click here to change password</a></h4>
+
+                                   </body> </html>`, loginuser.email)
+                                    passport.authenticate('local')(req, res, () => {
+                                        res.json({ response: 'success' });
+                                    })
+                                }
+                            })
                         }
                     })
 
                 }
             })
-
         }
     })
-
 })
 
-app.post('/rejectUser', (req, res) => {
 
+app.post('/rejectUser', (req, res) => {
     UserRequest.remove({ username: req.body.username }, (err) => {
         if (err) {
             res.json({ response: 'fail' })
@@ -72,7 +116,5 @@ app.post('/rejectUser', (req, res) => {
         }
     })
 })
-
-
 
 module.exports = app;

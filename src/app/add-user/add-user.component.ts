@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit , Input} from '@angular/core';
 import { AdminService } from '../_services/admin.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -9,14 +9,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AddUserComponent implements OnInit {
   users: any[] ;
+ me: any;
   constructor(private _adminService: AdminService, private route: ActivatedRoute, private router: Router) {
+    this._adminService.currentUser.subscribe(resp => {
+      this.me = resp;
+    //  console.log(this.me);
+    });
     this._adminService.getRequestsList()
     .subscribe(resp => {
           this.users = resp ;
-          console.log(this.users);
-    }, err => {
-
-    });
+         });
   }
 accept(username) {
   this._adminService.accept(username)
