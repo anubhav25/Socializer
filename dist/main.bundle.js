@@ -255,10 +255,8 @@ var AuthenticateService = (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("../../../common/esm5/http.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ng_socket_io__ = __webpack_require__("../../../../ng-socket-io/dist/index.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ng_socket_io___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_ng_socket_io__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_socketio_file_upload_client_min__ = __webpack_require__("../../../../socketio-file-upload/client.min.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_socketio_file_upload_client_min___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_socketio_file_upload_client_min__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/_esm5/BehaviorSubject.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_rxjs_add_operator_map__ = __webpack_require__("../../../../rxjs/_esm5/add/operator/map.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__ = __webpack_require__("../../../../rxjs/_esm5/BehaviorSubject.js");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -273,19 +271,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
-
 var ChatService = (function () {
     function ChatService(_http, socket) {
         this._http = _http;
         this.socket = socket;
-        this.myOnlineUsers = new __WEBPACK_IMPORTED_MODULE_5_rxjs_BehaviorSubject__["a" /* BehaviorSubject */]('');
+        this.myOnlineUsers = new __WEBPACK_IMPORTED_MODULE_4_rxjs_BehaviorSubject__["a" /* BehaviorSubject */]('');
         this.onlineUsers = this.myOnlineUsers.asObservable();
         this.baseUrl = 'http://localhost:3000/chat/';
         this.InitializeSocketListerners();
     }
-    ChatService.prototype.getsiofu = function () {
-        return __WEBPACK_IMPORTED_MODULE_3_socketio_file_upload_client_min__;
-    };
     ChatService.prototype.online = function (username) {
         this.socket.emit('online', username);
     };
@@ -304,29 +298,20 @@ var ChatService = (function () {
             return resp;
         });
     };
-    /* listFriends(): Observable<any> {
-      return this._http.post(this.baseUrl + 'listFriends', { userId: this.userId })
-        .map(resp => {
-          console.log(resp );
-          return resp;
-        }); */
-    /* }
-      listMyFriends() {
-        // List connected users to show in the friends list
-        // Sending the userId from the request body as this is just a demo
-        return this._http.post(this.baseUrl + 'listFriends', { userId: this.userId } )
-        .map( resp => {
+    ChatService.prototype.chatfile = function (formData) {
+        var header = new __WEBPACK_IMPORTED_MODULE_1__angular_common_http__["c" /* HttpHeaders */]();
+        header.append('enctype', 'multipart/form-data');
+        header.append('Accept', 'application/json');
+        var options = { headers: header };
+        return this._http.post(this.baseUrl + 'newchatfile', formData, options)
+            .map(function (resp) {
+            //         console.log(resp);
+            if (!resp) {
+                return { response: 'fail' };
+            }
             return resp;
         });
-      }
-    
-      getMessageHistory(userId: any): Observable<Message[]> {
-        // This could be an API call to your NodeJS application that would go to the database
-        // and retrieve a N amount of history messages between the users.
-        return JSON.parse('[]');
-      }
-    
-    */
+    };
     ChatService.prototype.getSocket = function () {
         return this.socket;
     };
@@ -1042,7 +1027,7 @@ var ChangePasswordComponent = (function () {
 /***/ "../../../../../src/app/chat-body/chat-body.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"chat\">\n    <div *ngIf=\"chatwith === undefined; then emptyChat; else Chatwithsomeone\"></div>\n    <ng-template #emptyChat>\n        <img src=\"/assets/img/chat.jpg\" alt=\"select a contact to start chatting\" style=\"min-width: 100%; min-height: 100%; max-width: 100%; max-height: 100%;\" />\n\n    </ng-template>\n\n    <ng-template #Chatwithsomeone>\n        <div class=\"chat-header clearfix\">\n            <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\".sidebar-navbar-collapse\" aria-controls=\"sidebar-navbar-collapse\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n                  Users\n                  <i class=\"fa fa-users\"></i>\n                </button>\n\n            <img class=\"rounded-circle\" [src]=\"chatwith.thumbnail\" alt=\"avatar\" />\n            <div class=\"chat-with mx-auto\">{{ chatwith.username }}</div>\n\n\n        </div>\n        <!-- end chat-header -->\n\n        <div class=\"chat-history\">\n            <ul>\n                <li class=\"clearfix\" *ngFor=\"let msg of messages\">\n                    <div *ngIf=\"msg.from === me.username; then mymsg; else othermsg;\"></div>\n                    <ng-template #mymsg>\n                        <div class=\"message-data align-right\">\n                            <span class=\"message-data-time\">{{ moment(msg.time).format( 'MMM Do YYYY, h:mm a') }}</span> &nbsp; &nbsp;\n                            <span class=\"message-data-name\">{{ msg.from }}</span> <i class=\"fa fa-circle me\"></i>\n\n                        </div>\n                        <div class=\"message other-message float-right\">\n                            {{ msg.message }}\n                        </div>\n                    </ng-template>\n\n                    <ng-template #othermsg>\n                        <div class=\"message-data\">\n                            <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> {{ msg.from }}</span>\n                            <span class=\"message-data-time\">{{ moment(msg.time).format( 'MMM Do YYYY, h:mm a') }}</span>\n                        </div>\n                        <div class=\"message my-message\">\n                            {{ msg.message }}\n                        </div>\n                    </ng-template>\n                </li>\n\n\n            </ul>\n\n\n        </div>\n        <!-- end chat-history -->\n\n        <div class=\"chat-message clearfix container my-auto\">\n            <div class=\"float-left col-9 mx-auto\">\n                <input type=\"text\" name=\"message-to-send\" #text id=\"message-to-send\" placeholder=\"Type your message\">\n            </div>\n            <div class=\"float-right col-3 mx-auto\">\n                <a><i class=\"fa fa-file-o\"></i></a>&nbsp;&nbsp;&nbsp;\n                <a><i class=\"fa fa-file-image-o\"></i></a>&nbsp;&nbsp;&nbsp;\n                <button [disabled]=\"loading\" (click)=\"sendmsg(text)\" class=\"btn btn-primary\">Send\n                                                <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\"\n                                                /></button>\n            </div>\n        </div>\n        <!-- end chat-message -->\n\n    </ng-template>\n\n\n</div>\n\n\n<!--   <li class=\"clearfix\">\n                    <div class=\"message-data align-right\">\n                        <span class=\"message-data-time\">10:10 AM, Today</span> &nbsp; &nbsp;\n                        <span class=\"message-data-name\">Olia</span> <i class=\"fa fa-circle me\"></i>\n\n                    </div>\n                    <div class=\"message other-message float-right\">\n                        Hi Vincent, how are you? How is the project coming along?\n                    </div>\n                </li>\n\n                <li>\n                    <div class=\"message-data\">\n                        <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> Vincent</span>\n                        <span class=\"message-data-time\">10:12 AM, Today</span>\n                    </div>\n                    <div class=\"message my-message\">\n                        Are we meeting today? Project has been already finished and I have results to show you.\n                    </div>\n                </li>\n\n                <li class=\"clearfix\">\n                    <div class=\"message-data align-right\">\n                        <span class=\"message-data-time\">10:14 AM, Today</span> &nbsp; &nbsp;\n                        <span class=\"message-data-name\">Olia</span> <i class=\"fa fa-circle me\"></i>\n\n                    </div>\n                    <div class=\"message other-message float-right\">\n                        Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any problems at the last phase of the project?\n                    </div>\n                </li>\n\n                <li>\n                    <div class=\"message-data\">\n                        <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> Vincent</span>\n                        <span class=\"message-data-time\">10:20 AM, Today</span>\n                    </div>\n                    <div class=\"message my-message\">\n                        Actually everything was fine. I'm very excited to show this to our team.\n                    </div>\n                </li>\n\n                <li>\n                    <div class=\"message-data\">\n                        <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> Vincent</span>\n                        <span class=\"message-data-time\">10:31 AM, Today</span>\n                    </div>\n                    <i class=\"fa fa-circle online\"></i>\n                    <i class=\"fa fa-circle online\" style=\"color: #AED2A6\"></i>\n                    <i class=\"fa fa-circle online\" style=\"color:#DAE9DA\"></i>\n                </li> -->"
+module.exports = "<div class=\"chat\">\n    <div *ngIf=\"chatwith === undefined; then emptyChat; else Chatwithsomeone\"></div>\n    <ng-template #emptyChat>\n        <img src=\"/assets/img/chat.jpg\" alt=\"select a contact to start chatting\" style=\"min-width: 100%; min-height: 100%; max-width: 100%; max-height: 100%;\" />\n\n    </ng-template>\n\n    <ng-template #Chatwithsomeone>\n        <div class=\"chat-header clearfix\">\n            <button class=\"navbar-toggler navbar-toggler-right\" type=\"button\" data-toggle=\"collapse\" data-target=\".sidebar-navbar-collapse\" aria-controls=\"sidebar-navbar-collapse\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n                  Users\n                  <i class=\"fa fa-users\"></i>\n                </button>\n\n            <img class=\"rounded-circle\" [src]=\"chatwith.thumbnail\" alt=\"avatar\" />\n            <div class=\"chat-with mx-auto\">{{ chatwith.username }}</div>\n\n\n        </div>\n        <!-- end chat-header -->\n\n        <div class=\"chat-history\">\n            <ul>\n                <li class=\"clearfix\" *ngFor=\"let msg of messages\">\n                    <div *ngIf=\"msg.from === me.username; then mymsg; else othermsg;\"></div>\n                    <ng-template #mymsg>\n                        <div class=\"message-data align-right\">\n                            <span class=\"message-data-time\">{{ msg.time }}</span> &nbsp; &nbsp;\n                            <span *ngIf=\"msg.hasMsg\" class=\"message-data-name\">{{ msg.from }}</span> <i class=\"fa fa-circle me\"></i>\n                            <img *ngIf=\"msg.hasImg\" [src]=\"link\" height=\"100px\" width=\"auto\">\n                            <div *ngIf=\"msg.hasFile\">\n                                <a [href]=\"link\"> {{ msg.filename }}</a> </div>\n                        </div>\n                        <div class=\"message other-message float-right\">\n                            {{ msg.message }}\n                        </div>\n                    </ng-template>\n\n                    <ng-template #othermsg>\n                        <div class=\"message-data\">\n                            <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> {{ msg.from }}</span>\n                            <span class=\"message-data-time\">{{ msg.time  }}</span>\n                        </div>\n                        <div class=\"message my-message\">\n                            {{ msg.message }}\n                        </div>\n                    </ng-template>\n                </li>\n\n                <!-- moment(msg.time).format( 'MMM Do YYYY, h:mm a') -->\n            </ul>\n\n\n        </div>\n        <!-- end chat-history -->\n\n        <div class=\"chat-message clearfix container my-auto\">\n            <div class=\"float-left col-9 mx-auto\">\n                <input type=\"text\" name=\"message-to-send\" #text id=\"message-to-send\" placeholder=\"Type your message\">\n            </div>\n            <div class=\"float-right col-3 mx-auto\">\n                <input type=\"file\" style=\"display:none;\" #chatFile (change)='handleFile($event,text)' />\n\n                <a (click)=\"selectFile(chatFile)\"><i class=\"fa fa-paperclip\"></i></a>&nbsp;&nbsp;&nbsp;\n                <button [disabled]=\"loading\" (click)=\"sendmsg(text,chatFile)\" class=\"btn btn-primary\">Send\n                                                <img *ngIf=\"loading\" src=\"data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==\"\n                                                /></button>\n            </div>\n        </div>\n        <!-- end chat-message -->\n\n    </ng-template>\n\n\n</div>\n\n\n<!--   <li class=\"clearfix\">\n                    <div class=\"message-data align-right\">\n                        <span class=\"message-data-time\">10:10 AM, Today</span> &nbsp; &nbsp;\n                        <span class=\"message-data-name\">Olia</span> <i class=\"fa fa-circle me\"></i>\n\n                    </div>\n                    <div class=\"message other-message float-right\">\n                        Hi Vincent, how are you? How is the project coming along?\n                    </div>\n                </li>\n\n                <li>\n                    <div class=\"message-data\">\n                        <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> Vincent</span>\n                        <span class=\"message-data-time\">10:12 AM, Today</span>\n                    </div>\n                    <div class=\"message my-message\">\n                        Are we meeting today? Project has been already finished and I have results to show you.\n                    </div>\n                </li>\n\n                <li class=\"clearfix\">\n                    <div class=\"message-data align-right\">\n                        <span class=\"message-data-time\">10:14 AM, Today</span> &nbsp; &nbsp;\n                        <span class=\"message-data-name\">Olia</span> <i class=\"fa fa-circle me\"></i>\n\n                    </div>\n                    <div class=\"message other-message float-right\">\n                        Well I am not sure. The rest of the team is not here yet. Maybe in an hour or so? Have you faced any problems at the last phase of the project?\n                    </div>\n                </li>\n\n                <li>\n                    <div class=\"message-data\">\n                        <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> Vincent</span>\n                        <span class=\"message-data-time\">10:20 AM, Today</span>\n                    </div>\n                    <div class=\"message my-message\">\n                        Actually everything was fine. I'm very excited to show this to our team.\n                    </div>\n                </li>\n\n                <li>\n                    <div class=\"message-data\">\n                        <span class=\"message-data-name\"><i class=\"fa fa-circle online\"></i> Vincent</span>\n                        <span class=\"message-data-time\">10:31 AM, Today</span>\n                    </div>\n                    <i class=\"fa fa-circle online\"></i>\n                    <i class=\"fa fa-circle online\" style=\"color: #AED2A6\"></i>\n                    <i class=\"fa fa-circle online\" style=\"color:#DAE9DA\"></i>\n                </li> -->"
 
 /***/ }),
 
@@ -1100,32 +1085,84 @@ var ChatBodyComponent = (function () {
     }
     ChatBodyComponent.prototype.ngOnInit = function () {
     };
-    ChatBodyComponent.prototype.sendmsg = function (textInput) {
-        var _this = this;
-        this.loading = true;
-        var message = {};
-        var text = textInput.value;
-        text = text.trim();
-        if (text) {
-            message.hasMsg = true;
-            message.hasImage = false;
-            message.hasFile = false;
-            message.message = text;
-            message.from = this.me.username;
-            message.to = this.chatwith.username;
-            message.time = new Date();
+    ChatBodyComponent.prototype.selectFile = function (fileinput) {
+        fileinput.click();
+    };
+    ChatBodyComponent.prototype.handleFile = function (event, text) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            text.value = '';
+            text.disabled = true;
+            /*  const message = {
+               from : this.me.username,
+               to : this.chatwith.username,
+               hasMsg: false,
+               hasFile: true,
+               fileLink: String,
+               filename: String,
+               time: Date.now(),
+               file : fileList[0]
+             }; */
         }
-        console.log(message);
-        this.socket.emit('sendMessage', message, function (resp) {
-            _this.loading = false;
-            if (!resp.success) {
-                alert('error in sending message');
+    };
+    ChatBodyComponent.prototype.sendmsg = function (textInput, chatFile) {
+        var _this = this;
+        var fileList = chatFile.files;
+        if (textInput.value) {
+            this.loading = true;
+            var message_1 = {};
+            var text = textInput.value;
+            text = text.trim();
+            if (text) {
+                message_1.hasMsg = true;
+                message_1.hasFile = false;
+                message_1.hasImg = false;
+                message_1.message = text;
+                message_1.from = this.me.username;
+                message_1.to = this.chatwith.username;
+                message_1.time = Date.now();
             }
-            else {
-                _this.messages.push(message);
-            }
-        });
-        textInput.value = '';
+            console.log(message_1);
+            this.socket.emit('sendMessage', message_1, function (resp) {
+                _this.loading = false;
+                if (!resp.success) {
+                    alert('error in sending message');
+                }
+                else {
+                    _this.messages.push(message_1);
+                }
+            });
+            textInput.value = '';
+        }
+        else if (fileList.length > 0) {
+            this.loading = true;
+            var file = fileList[0];
+            var body = new FormData();
+            var date = Date.now().toString;
+            body.append('from', this.me.username);
+            body.append('to', this.chatwith.username);
+            body.append('filename', file.name);
+            body.append('file', file, file.name);
+            this._chat.chatfile(body)
+                .subscribe(function (resp) {
+                _this.loading = false;
+                if (resp.response === 'success') {
+                    var msg_1 = resp.message;
+                    _this.socket.emit('sendMessage', msg_1, function (msgresp) {
+                        _this.loading = false;
+                        if (!msgresp.success) {
+                            alert('error in sending message');
+                        }
+                        else {
+                            _this.messages.push(msg_1);
+                        }
+                    });
+                }
+                else {
+                    alert('error in sending message');
+                }
+            });
+        }
     };
     __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Input"])(),
@@ -1153,7 +1190,7 @@ var ChatBodyComponent = (function () {
 /***/ "../../../../../src/app/chat-user-list/chat-user-list.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- <div class=\"col-lg-4 col-md-5\">\n    <nav class=\"navbar  navbar-expand-md\" role=\"navigation\">\n\n        <div class=\"people-list collapse navbar-collapse \" id=\"people-list\">\n            \n           \n\n        </div>\n    </nav>\n</div>\n\n<app-chat-body [chatwith]=\"chatwith \" [me]=\"me \"></app-chat-body>\n -->\n<div class=\"row m-0\" style=\"height: 100%; width : 100%;\">\n    <div class=\"col-lg-4 col-md-5 p-0 userlist\">\n        <div class=\"sidebar-nav\">\n            <div class=\"navbar navbar-expand-md p-0\" role=\"navigation\">\n\n                <div class=\"navbar-collapse collapse sidebar-navbar-collapse people-list\">\n\n                    <div class=\"people-list-ul p-2 ml-3\">\n                        <div class=\"nav-item search p-2\">\n                            <input type=\"text\" class=\"nav-item\" class=\"mx-auto p-2\" placeholder=\"search\" (keyup)=\"search($event.target.value)\" />\n                            <i class=\"fa fa-search\"></i>\n                        </div>\n                        <ul class=\"nav navbar-nav list\">\n                            <li class=\"clearfix nav-item\" *ngFor=\"let user of OnlineUsers \" (click)=\"showChat(user) \">\n                                <img [src]=\"user.thumbnail \" alt=\"avatar \" class=\"rounded-circle profileImage \" />\n                                <div class=\"about \">\n\n                                    <div class=\"name \" [id]=\"user.username \">\n                                        {{ user.username }}</div>\n                                    <label><i class=\"fa fa-circle online \"></i>Online </label>\n                                </div>\n                            </li>\n                            <li class=\"clearfix nav-item\" *ngFor=\"let user of OfflineUsers \" (click)=\"showChat(user) \">\n                                <img [src]=\"user.thumbnail \" alt=\"avatar \" class=\"rounded-circle profileImage \" />\n                                <div class=\"about \">\n\n                                    <div class=\"name \" [id]=\"user.username \">{{ user.username }}</div>\n                                    <label><i class=\"fa fa-circle offline \"></i>Offline </label>\n\n                                </div>\n                            </li>\n                        </ul>\n\n                    </div>\n                </div>\n                <!--/.nav-collapse -->\n            </div>\n        </div>\n    </div>\n    <div class=\" col-lg-8 col-md-7 p-0 chatbox\">\n        <app-chat-body [chatwith]=\"chatwith \" [me]=\"me \"></app-chat-body>\n    </div>\n</div>"
+module.exports = "<!-- <div class=\"col-lg-4 col-md-5\">\n    <nav class=\"navbar  navbar-expand-md\" role=\"navigation\">\n\n        <div class=\"people-list collapse navbar-collapse \" id=\"people-list\">\n            \n           \n\n        </div>\n    </nav>  \n</div>\n\n<app-chat-body [chatwith]=\"chatwith \" [me]=\"me \"></app-chat-body>\n -->\n<div class=\"row m-0\" style=\"height: 100%; width : 100%;\">\n    <div class=\"col-lg-4 col-md-5 p-0 userlist\">\n        <div class=\"sidebar-nav\">\n            <div class=\"navbar navbar-expand-md p-0\" role=\"navigation\">\n\n                <div class=\"navbar-collapse collapse sidebar-navbar-collapse people-list\">\n\n                    <div class=\"people-list-ul p-2 ml-3\">\n                        <div class=\"nav-item search p-2\">\n                            <input type=\"text\" class=\"nav-item\" class=\"mx-auto p-2\" placeholder=\"search\" (keyup)=\"search($event.target.value)\" />\n                            <i class=\"fa fa-search\"></i>\n                        </div>\n                        <ul class=\"nav navbar-nav list\">\n                            <li class=\"clearfix nav-item\" *ngFor=\"let user of OnlineUsers \" (click)=\"showChat(user) \">\n                                <img [src]=\"user.thumbnail \" alt=\"avatar \" class=\"rounded-circle profileImage \" />\n                                <div class=\"about \">\n\n                                    <div class=\"name \" [id]=\"user.username \">\n                                        {{ user.username }}</div>\n                                    <label><i class=\"fa fa-circle online \"></i>Online </label>\n                                </div>\n                            </li>\n                            <li class=\"clearfix nav-item\" *ngFor=\"let user of OfflineUsers \" (click)=\"showChat(user) \">\n                                <img [src]=\"user.thumbnail \" alt=\"avatar \" class=\"rounded-circle profileImage \" />\n                                <div class=\"about \">\n\n                                    <div class=\"name \" [id]=\"user.username \">{{ user.username }}</div>\n                                    <label><i class=\"fa fa-circle offline \"></i>Offline </label>\n\n                                </div>\n                            </li>\n                        </ul>\n\n                    </div>\n                </div>\n                <!--/.nav-collapse -->\n            </div>\n        </div>\n    </div>\n    <div class=\" col-lg-8 col-md-7 p-0 chatbox\">\n        <app-chat-body [chatwith]=\"chatwith \" [me]=\"me \"></app-chat-body>\n    </div>\n</div>"
 
 /***/ }),
 
@@ -2066,7 +2103,7 @@ var RegisterFormComponent = (function () {
 /***/ "../../../../../src/app/temp/temp.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navbar-header\">\n\n    <button class=\"navbar-toggler\" type=\"button\" data-toggle=\"collapse\" data-target=\"#users-list\" aria-controls=\"users-list\" aria-expanded=\"false\" aria-label=\"Toggle navigation\">\n                  Menu\n                  <i class=\"fa fa-users\"></i>\n                </button>\n</div>\n\n\n<nav class=\"navbar navbar-default\" role=\"navigation\">\n\n\n    <!-- Collect the nav links, forms, and other content for toggling -->\n    <div class=\"collapse navbar-collapse navbar-ex1-collapse\" id=\"users-list\">\n        <ul class=\"nav navbar-nav\">\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n            <li><a href=\"#\">Link</a></li>\n\n\n\n        </ul>\n    </div>\n    <!-- /.navbar-collapse -->\n</nav>"
+module.exports = "<input type=\"text\" name=\"message-to-send\" #text id=\"message-to-send\" placeholder=\"Type your message\">\n\n<input type=\"file\" #chatFile (change)='handleFile($event,text)' />"
 
 /***/ }),
 
@@ -2091,11 +2128,19 @@ var TempComponent = (function () {
     }
     TempComponent.prototype.ngOnInit = function () {
     };
+    TempComponent.prototype.handleFile = function (event, text) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            text.value = '';
+            text.disabled = true;
+            console.log(fileList);
+        }
+    };
     TempComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Component"])({
             selector: 'app-temp',
             template: __webpack_require__("../../../../../src/app/temp/temp.component.html"),
-            styles: ["\n  @media (min-width: 768px) {\n    .navbar-collapse {\n        height: auto;\n        border-top: 0;\n        box-shadow: none;\n        max-height: none;\n        padding-left: 0;\n        padding-right: 0;\n    }\n    .navbar-collapse.collapse {\n        display: block !important;\n        width: auto !important;\n        padding-bottom: 0;\n        overflow: visible !important;\n    }\n    .navbar-collapse.in {\n        overflow-x: visible;\n    }\n    .navbar {\n        max-width: 300px;\n        margin-right: 0;\n        margin-left: 0;\n    }\n    .navbar-nav,\n    .navbar-nav>li,\n    .navbar-left,\n    .navbar-right,\n    .navbar-header {\n        float: none !important;\n    }\n    .navbar-right .dropdown-menu {\n        left: 0;\n        right: auto;\n    }\n    .navbar-collapse .navbar-nav.navbar-right:last-child {\n        margin-right: 0;\n    }\n}"]
+            styles: [""]
         }),
         __metadata("design:paramtypes", [])
     ], TempComponent);

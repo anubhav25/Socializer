@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { Socket } from 'ng-socket-io';
-import * as siofu from 'socketio-file-upload/client.min';
 import 'rxjs/add/operator/map';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
@@ -12,9 +11,6 @@ export class ChatService  {
   onlineUsers = this.myOnlineUsers.asObservable();
   baseUrl: String = 'http://localhost:3000/chat/';
 
-public getsiofu () {
-  return siofu;
-}
 
   public online(username): void {
     this.socket.emit('online', username);
@@ -40,30 +36,23 @@ getHistory(me, other) {
     return resp;
   });
 }
-/* listFriends(): Observable<any> {
-  return this._http.post(this.baseUrl + 'listFriends', { userId: this.userId })
-    .map(resp => {
-      console.log(resp );
-      return resp;
-    }); */
-
-/* }
-  listMyFriends() {
-    // List connected users to show in the friends list
-    // Sending the userId from the request body as this is just a demo
-    return this._http.post(this.baseUrl + 'listFriends', { userId: this.userId } )
-    .map( resp => {
+  chatfile(formData: any) {
+    const header = new HttpHeaders();
+    header.append('enctype', 'multipart/form-data');
+    header.append('Accept', 'application/json');
+    const options = { headers: header };
+    return this._http.post<any>(this.baseUrl + 'newchatfile', formData, options)
+      .map(resp => {
+        //         console.log(resp);
+        if (!resp) {
+          return { response: 'fail' };
+        }
         return resp;
-    });
+      });
   }
 
-  getMessageHistory(userId: any): Observable<Message[]> {
-    // This could be an API call to your NodeJS application that would go to the database
-    // and retrieve a N amount of history messages between the users.
-    return JSON.parse('[]');
-  }
 
-*/
+
 getSocket () {
   return this.socket ;
 }

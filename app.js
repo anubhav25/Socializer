@@ -11,7 +11,7 @@ var Login = require('./models/login');
 var index = require('./routes/index');
 var admin = require('./routes/admin');
 var path = require('path');
-var siofu = require("socketio-file-upload");
+
 
 
 var port = normalizePort(process.env.PORT || '3000');
@@ -52,8 +52,7 @@ app.use(function(req, res, next) {
     next();
 });
 app.use(express.static(path.join(__dirname, 'dist')));
-app.use(siofu.router);
-var Chat = require('./routes/chat')(server, siofu);
+var Chat = require('./routes/chat')(server);
 app.use('/api', index)
 app.use('/chat', Chat);
 app.use('/admin', admin);

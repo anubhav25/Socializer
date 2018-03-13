@@ -25,9 +25,11 @@
                     <div *ngIf="msg.from === me.username; then mymsg; else othermsg;"></div>
                     <ng-template #mymsg>
                         <div class="message-data align-right">
-                            <span class="message-data-time">{{ moment(msg.time).format( 'MMM Do YYYY, h:mm a') }}</span> &nbsp; &nbsp;
-                            <span class="message-data-name">{{ msg.from }}</span> <i class="fa fa-circle me"></i>
-
+                            <span class="message-data-time">{{ msg.time }}</span> &nbsp; &nbsp;
+                            <span *ngIf="msg.hasMsg" class="message-data-name">{{ msg.from }}</span> <i class="fa fa-circle me"></i>
+                            <img *ngIf="msg.hasImg" [src]="link" height="100px" width="auto">
+                            <div *ngIf="msg.hasFile">
+                                <a [href]="link"> {{ msg.filename }}</a> </div>
                         </div>
                         <div class="message other-message float-right">
                             {{ msg.message }}
@@ -37,7 +39,7 @@
                     <ng-template #othermsg>
                         <div class="message-data">
                             <span class="message-data-name"><i class="fa fa-circle online"></i> {{ msg.from }}</span>
-                            <span class="message-data-time">{{ moment(msg.time).format( 'MMM Do YYYY, h:mm a') }}</span>
+                            <span class="message-data-time">{{ msg.time  }}</span>
                         </div>
                         <div class="message my-message">
                             {{ msg.message }}
@@ -45,7 +47,7 @@
                     </ng-template>
                 </li>
 
-
+                <!-- moment(msg.time).format( 'MMM Do YYYY, h:mm a') -->
             </ul>
 
 
@@ -57,9 +59,10 @@
                 <input type="text" name="message-to-send" #text id="message-to-send" placeholder="Type your message">
             </div>
             <div class="float-right col-3 mx-auto">
-                <a><i class="fa fa-file-o"></i></a>&nbsp;&nbsp;&nbsp;
-                <a><i class="fa fa-file-image-o"></i></a>&nbsp;&nbsp;&nbsp;
-                <button [disabled]="loading" (click)="sendmsg(text)" class="btn btn-primary">Send
+                <input type="file" style="display:none;" #chatFile (change)='handleFile($event,text)' />
+
+                <a (click)="selectFile(chatFile)"><i class="fa fa-paperclip"></i></a>&nbsp;&nbsp;&nbsp;
+                <button [disabled]="loading" (click)="sendmsg(text,chatFile)" class="btn btn-primary">Send
                                                 <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
                                                 /></button>
             </div>
