@@ -49,7 +49,7 @@ export class ChatBodyComponent implements OnInit {
 
   sendmsg(textInput, chatFile) {
     const fileList: FileList = chatFile.files;
-    if (textInput.value) {
+    if (textInput.value.trim()) {
     this.loading = true;
     const message: any = {};
     let text = textInput.value;
@@ -57,7 +57,7 @@ export class ChatBodyComponent implements OnInit {
     if (text) {
       message.hasMsg = true;
       message.hasFile = false;
-      message.hasImg =false ;
+      message.hasImg = false ;
       message.message = text;
       message.from = this.me.username;
       message.to = this.chatwith.username;
@@ -100,6 +100,7 @@ export class ChatBodyComponent implements OnInit {
           } else {
             alert('error in sending message');
           }
+          textInput.disabled = false;
       });
  }
   }

@@ -27,9 +27,9 @@
                         <div class="message-data align-right">
                             <span class="message-data-time">{{ msg.time }}</span> &nbsp; &nbsp;
                             <span *ngIf="msg.hasMsg" class="message-data-name">{{ msg.from }}</span> <i class="fa fa-circle me"></i>
-                            <img *ngIf="msg.hasImg" [src]="link" height="100px" width="auto">
+                            <img *ngIf="msg.hasImg" [src]="msg.link" height="100px" width="auto">
                             <div *ngIf="msg.hasFile">
-                                <a [href]="link"> {{ msg.filename }}</a> </div>
+                                <a [href]="msg.link"> {{ msg.filename }}</a> </div>
                         </div>
                         <div class="message other-message float-right">
                             {{ msg.message }}

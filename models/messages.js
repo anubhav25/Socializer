@@ -11,9 +11,22 @@ var messageSchema = mongoose.Schema({
         required: true
     },
     hasMsg: Boolean,
-    hasFile: Boolean,
-    fileLink: String,
-    filename: String,
+    hasFile: {
+        type: Boolean,
+        default: false
+    },
+    hasImg: {
+        type: Boolean,
+        default: true
+    },
+    link: {
+        type: String,
+        default: ''
+    },
+    filename: {
+        type: String,
+        default: ''
+    },
     time: {
         type: Date,
         default: new Date()

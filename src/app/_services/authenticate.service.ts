@@ -65,7 +65,7 @@ export class AuthenticateService {
     return this._http.get<any>(this.baseUrl + '/isLoggedin')
       .map(resp => {
         console.log(resp);
-             /*   resp = {
+/*                 resp = {
           message: true,
           user: {
             '_id': '5a9e6c3f4701de2af429fe0f',

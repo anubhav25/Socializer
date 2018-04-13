@@ -17,6 +17,7 @@ var app = express.Router();
     res.redirect('/login')
 }
  */
+
 app.get('/isLoggedIn', (req, res) => {
     if (req.isAuthenticated()) {
         User.findById(req.user.userid, (err, user) => {
