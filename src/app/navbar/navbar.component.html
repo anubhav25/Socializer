@@ -32,16 +32,19 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-success buttonIcon pull-right" (click)="logout()"><span class="buttonText"> {{ user.username }} &nbsp;</span><i class='fa fa-user'></i></a>
+                    <a class="btn btn-outline-success buttonIcon pull-right" [href]="'/profile/'+user.username"><span class="buttonText"> {{ user.username }} &nbsp;</span><i class='fa fa-user'></i></a>
                 </li>
                 <li class="nav-item" *ngIf="user && user.admin ">
                     <a class="btn btn-outline-success buttonIcon pull-right" id="requestsButton" href="/admin/requests"><span class="buttonText">Requests&nbsp;</span><i class='fa fa-user-plus'></i></a>
+                </li>
+                <li class="nav-item" *ngIf="user && !user.admin ">
+                    <a class="btn btn-outline-success buttonIcon pull-right" id="changepassword" href="/changepassword"><span class="buttonText">Change Password&nbsp;</span><i class='fa fa-key'></i></a>
                 </li>
                 <li class="nav-item">
                     <a class="btn btn-outline-success buttonIcon pull-right" href="/messages"><span class="buttonText">messages&nbsp;</span><i class='fa fa-envelope'></i></a>
                 </li>
                 <li class="nav-item">
-                    <a class="btn btn-outline-success buttonIcon pull-right" (click)="logout()"><span class="buttonText">logout&nbsp;</span><i class='fa fa-sign-out'></i></a>
+                    <a class="btn btn-outline-success buttonIcon pull-right" href="/logout"><span class="buttonText">logout&nbsp;</span><i class='fa fa-sign-out'></i></a>
                 </li>
             </ul>
         </div>

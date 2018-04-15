@@ -103,7 +103,5 @@ this._userService.search(text)
 
 
   }
-  logout() {
-    console.log('logout');
-  }
+
 }

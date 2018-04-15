@@ -48,7 +48,7 @@ app.post('/emailValid', (req, res) => {
     //check of if the email is already available
     //if already exists send false
     //else send true
-    if (req.body.email == 'anubhav@ab.ab')
+    if (req.body.email == 'gupta@mailinator.com')
         res.json({ response: false });
     else
         res.json({ response: true });

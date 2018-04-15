@@ -5,7 +5,7 @@ var commentSchema = new mongoose.Schema({
         ref: "Posts"
     },
 
-    username: {
+    author: {
         type: String,
         required: true
     },
@@ -18,7 +18,7 @@ var commentSchema = new mongoose.Schema({
         type: String,
         required: true
 
-    },
+    }
 
 });
 module.exports = mongoose.model('Comments', commentSchema);

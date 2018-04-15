@@ -13,7 +13,6 @@ export class AddUserComponent implements OnInit {
   constructor(private _adminService: AdminService, private route: ActivatedRoute, private router: Router) {
     this._adminService.currentUser.subscribe(resp => {
       this.me = resp;
-    //  console.log(this.me);
     });
     this._adminService.getRequestsList()
     .subscribe(resp => {

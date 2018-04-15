@@ -39,7 +39,11 @@ var userSchema = new mongoose.Schema({
             type: Number,
             default: 0
         }
-    }]
+    }],
+    admin: {
+        type: Boolean,
+        default: false
+    }
 
 });
 module.exports = mongoose.model('Users', userSchema);

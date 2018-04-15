@@ -13,20 +13,11 @@ var postSchema = new mongoose.Schema({
         type: Date,
         default: new Date()
     },
-    post: {
-        type: String
-
-    },
-    Imagepath: {
-        type: String
-
-    },
-    filepath: {
-        type: String,
-
-    },
-
-    likes = [
+    text: String,
+    imagepath: String,
+    filepath: String,
+    filename: String,
+    likes: [
 
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -34,7 +25,7 @@ var postSchema = new mongoose.Schema({
         }
     ],
 
-    comment = [{
+    comment: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Comments"
 

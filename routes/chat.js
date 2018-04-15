@@ -105,8 +105,8 @@ module.exports = (server) => {
     });
     http: //localhost:3000/assets/chatUploads/upload_c469960879d06d253372f104724a359a.pdf
 
-        app.get('/assets/chatUploads/:file/:filename', (req, res) => {
-            res.download("./assets/chatUploads/" + req.params.file, req.params.filename);
+        app.get('/dist/assets/chatUploads/:file/:filename', (req, res) => {
+            res.download("./dist/assets/chatUploads/" + req.params.file, req.params.filename);
         })
 
 
@@ -114,8 +114,9 @@ module.exports = (server) => {
     app.post('/newchatfile', function(req, res) {
         var date = Date.now();
         var form = new formidable.IncomingForm({
-            uploadDir: './assets/chatUploads',
-            keepExtensions: true
+            uploadDir: './dist/assets/chatUploads',
+            keepExtensions: true,
+            maxFileSize: 200 * 1024 * 1024
         });
         form.parse(req, function(err, fields, files) {
 
@@ -126,19 +127,20 @@ module.exports = (server) => {
             if (fields.filename.endsWith('.jpg') || fields.filename.endsWith('.jpeg') ||
                 fields.filename.endsWith('.png')) {
                 message.hasImg = true;
-                message.hasFile = false;
+
             } else {
                 message.hasImg = false;
-                message.hasFile = true;
+
             }
 
-
+            message.hasFile = true;
             message.message = '';
             message.from = fields.from;
             message.to = fields.to;
             message.filename = fields.filename;
             message.time = Date.now();
-            message.link = '/chat' + files.file.path.substr(3) + '/' + fields.filename;
+            console.log(files)
+            message.link = '\\chat\\' + files.file.path + '\\' + fields.filename;
 
             console.log({
                 response: 'success',

@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
       .subscribe(resp => {
         if (resp.message && resp.user) {
           this.me = resp.user;
+          console.log(this.me);
         } else {
           this.router.navigate(['/login']);
         }

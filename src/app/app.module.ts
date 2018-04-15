@@ -30,6 +30,9 @@ import { ChatService } from './_services/chat.service';
 import { ChatUserListComponent } from './chat-user-list/chat-user-list.component';
 import { ChatBodyComponent } from './chat-body/chat-body.component';
 import { TempComponent } from './temp/temp.component';
+import { PostsComponent } from './posts/posts.component';
+import { PostService } from './_services/post.service';
+import { PostComponent } from './post/post.component';
 
 const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
 
@@ -52,7 +55,9 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
     MessagesComponent,
     ChatUserListComponent,
     ChatBodyComponent,
-    TempComponent
+    TempComponent,
+    PostsComponent,
+    PostComponent
   ],
   imports: [
     BrowserModule,
@@ -66,6 +71,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
         path :  '',
         redirectTo : '/home',
         pathMatch : 'full'
+      },
+      {
+        path: 'logout',
+        component: LoginComponent
       },
       {
         path :  'login',
@@ -105,7 +114,10 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
         children: [{
           path: 'requests',
           component: AddUserComponent
-        }]
+        }, {
+            path: '',
+            redirectTo: '/home'
+          }]
       },
       {
         path: '**',
@@ -113,7 +125,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
       }
     ])
   ],
-  providers: [ AuthenticateService, ValidatorService, AdminService , UserService, ChatService],
+  providers: [ AuthenticateService, ValidatorService, AdminService , UserService, ChatService, PostService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

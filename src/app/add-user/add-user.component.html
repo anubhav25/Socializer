@@ -10,7 +10,7 @@
                     <h6 class="card-text">{{ user.phoneNo }}</h6>
                     <h6 class="card-text">{{ user.username }}</h6>
 
-                    <button class="btn btn-outline-info m-1" (click)="viewProfile(user.username)">View Profile <i class="fa fa-user"></i></button>
+                    <a class="btn btn-outline-info m-1" [href]="'/profile/'+user.username">View Profile <i class="fa fa-user"></i></a>
 
                     <div class="">
                         <button class="btn btn-outline-success m-1" (click)="accept(user.username)">Accept <i class="fa fa-check"></i></button>

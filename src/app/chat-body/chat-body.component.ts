@@ -18,6 +18,8 @@ export class ChatBodyComponent implements OnInit {
    this.socket.on('sendMessage', (message) => {
       console.log(message);
       this.messages.push(message);
+     const objDiv = document.getElementById('chat-history');
+     objDiv.scrollTop = objDiv.scrollHeight;
     });
      }
 
@@ -71,6 +73,8 @@ export class ChatBodyComponent implements OnInit {
         alert('error in sending message');
       } else {
         this.messages.push(message);
+        const objDiv = document.getElementById('chat-history');
+        objDiv.scrollTop = objDiv.scrollHeight;
       }
     });
 
@@ -95,6 +99,8 @@ export class ChatBodyComponent implements OnInit {
                 alert('error in sending message');
               } else {
                 this.messages.push(msg);
+                const objDiv = document.getElementById('chat-history');
+                objDiv.scrollTop = objDiv.scrollHeight;
               }
             });
           } else {

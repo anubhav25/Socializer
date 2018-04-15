@@ -1,0 +1,20 @@
+<div class="card mt-2" style="width:100%">
+    <label class="float-left mx-3"> <b>{{ post.username }}</b> <button class="float-right" *ngIf="post.author === me._id || me.admin" (click)="delete()"><i class="fa fa-trash"></i></button></label>
+
+    <img *ngIf="post.imagepath" class="card-img-top" [src]="post.imagepath" alt="image" style="width:100%">
+    <a *ngIf="post.imagepath" [href]="post.imagepath +'\\'+ post.filename">{{ post.filename }}</a>
+    <a *ngIf="post.filepath" [href]="post.filepath +'\\'+ post.filename">{{ post.filename }}</a>
+    <div class="card-body">
+        <p *ngIf="post.text" class="card-text">{{ post.text }}</p>
+
+    </div>
+    <div *ngFor="let cmnt of post.comment">
+        <label class="float-left mx-3"> <b>{{cmnt.author}} : </b>{{ cmnt.comment }}</label>
+    </div>
+    <div>
+        <input type="text" placeholder="comment" #commentInput style='width :90%'>
+        <button *ngIf="!liked" class="btn btn-primary float-left m-2" (click)='like()'>Like</button>
+        <button *ngIf="liked" class="btn btn-warning float-left m-2" (click)='unlike()'>UnLike</button>
+        <button class="btn btn-primary float-right m-2" (click)='comment(commentInput)'>Comment</button>
+    </div>
+</div>

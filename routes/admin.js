@@ -7,12 +7,21 @@ var passport = require('passport');
 
 var app = express.Router();
 app.get('/isLoggedIn', (req, res) => {
-    if (req.isAuthenticated() && req.user.admin) {
-        req.user.populate('userid').exec((err, user) => {
+
+    if (req.isAuthenticated()) {
+        User.findById(req.user.userid, (err, user) => {
+
             if (err) {
                 res.json({ message: false })
             } else {
-                res.json({ message: true, user: user });
+                console.log(user)
+                if (user.admin) {
+                    console.log(user)
+                    res.json({ message: true, user: user });
+                } else {
+                    res.json({ message: false })
+                }
+
             }
         });
 

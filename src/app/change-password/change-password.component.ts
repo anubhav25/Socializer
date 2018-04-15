@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class ChangePasswordComponent implements OnInit {
   title: String = 'Socializer';
+
   me: any;
   model: any = {};
   error: String = 'Server Error.';

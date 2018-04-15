@@ -72,23 +72,6 @@ export class AdminService {
   isLoggedIn() {
      return this._http.get<any>(this.baseUrl + '/isLoggedin')
       .map(resp => {
-        resp = {
-          message: true,
-          user: {
-            '_id': '5a9e6c3f4701de2af429fe0f',
-            'username': 'anubhav789',
-            'email': 'anubhav@mailinator.com',
-            'phoneNo': '7404541567',
-            'fullname': 'anubhav',
-            'dob': new Date('1996-05-25T05:30:00.000+05:30'),
-            'gender': 'male',
-            'admin' : true,
-            'imglink': '/assets/profilePictures/anubhav-1520331635492.jpg',
-            'thumbnail': '/assets/thumbnails/anubhav-1520331635492.jpg',
-            'description': 'asmjdhkaj',
-            '__v': 0
-          }
-        };
         if (resp.message && resp.user) {
           this.myobj.next(resp.user);
           this.me = resp.user ;

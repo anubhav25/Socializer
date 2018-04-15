@@ -10,6 +10,7 @@ var passportLocalMongoose = require('passport-local-mongoose');
 var Login = require('./models/login');
 var index = require('./routes/index');
 var admin = require('./routes/admin');
+var post = require('./routes/post');
 var path = require('path');
 
 
@@ -55,6 +56,7 @@ app.use(express.static(path.join(__dirname, 'dist')));
 var Chat = require('./routes/chat')(server);
 app.use('/api', index)
 app.use('/chat', Chat);
+app.use('/post', post);
 app.use('/admin', admin);
 
 app.get('*', (req, res) => {

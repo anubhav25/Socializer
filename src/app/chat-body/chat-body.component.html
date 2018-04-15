@@ -26,13 +26,16 @@
                     <ng-template #mymsg>
                         <div class="message-data align-right">
                             <span class="message-data-time">{{ msg.time }}</span> &nbsp; &nbsp;
-                            <span *ngIf="msg.hasMsg" class="message-data-name">{{ msg.from }}</span> <i class="fa fa-circle me"></i>
-                            <img *ngIf="msg.hasImg" [src]="msg.link" height="100px" width="auto">
-                            <div *ngIf="msg.hasFile">
-                                <a [href]="msg.link"> {{ msg.filename }}</a> </div>
+                            <span class="message-data-name">{{ msg.from }}</span> <i class="fa fa-circle me"></i>
                         </div>
                         <div class="message other-message float-right">
-                            {{ msg.message }}
+                            <p *ngIf="msg.hasMsg">
+                                {{ msg.message }}
+                            </p>
+                            <img *ngIf="msg.hasImg" [src]="msg.link" height="100px" width="auto">
+                            <div *ngIf="msg.hasFile">
+                                <a [href]="msg.link"> {{ msg.filename }}</a>
+                            </div>
                         </div>
                     </ng-template>
 
@@ -42,7 +45,13 @@
                             <span class="message-data-time">{{ msg.time  }}</span>
                         </div>
                         <div class="message my-message">
-                            {{ msg.message }}
+                            <p *ngIf="msg.hasMsg">
+                                {{ msg.message }}
+                            </p>
+                            <img *ngIf="msg.hasImg" [src]="msg.link" height="100px" width="auto">
+                            <div *ngIf="msg.hasFile">
+                                <a [href]="msg.link"> {{ msg.filename }}</a>
+                            </div>
                         </div>
                     </ng-template>
                 </li>
