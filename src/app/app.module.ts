@@ -114,10 +114,7 @@ const config: SocketIoConfig = { url: 'http://localhost:3000', options: {} };
         children: [{
           path: 'requests',
           component: AddUserComponent
-        }, {
-            path: '',
-            redirectTo: '/home'
-          }]
+        }]
       },
       {
         path: '**',

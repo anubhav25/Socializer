@@ -3,7 +3,7 @@
     <div class="container">
         <div *ngIf="user && user.admin; then adminBlock; else userBlock"></div>
         <ng-template #adminBlock>
-            <a class="navbar-brand js-scroll-trigger" href="/admin">{{ title }}</a>
+            <a class="navbar-brand js-scroll-trigger" href="/home">{{ title }}</a>
         </ng-template>
 
         <ng-template #userBlock>
