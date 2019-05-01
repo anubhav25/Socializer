@@ -18,6 +18,7 @@ export class ChatService  {
 
 
   constructor(private _http: HttpClient, private socket: Socket) {
+    this.baseUrl = '/chat/';
     this.InitializeSocketListerners();
 
   }
